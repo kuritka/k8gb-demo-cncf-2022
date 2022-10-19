@@ -1,0 +1,25 @@
+apiVersion: k8gb.absa.oss/v1beta1
+kind: Gslb
+metadata:
+  name: gslb
+spec:
+  ingress:
+    ingressClassName: nginx
+    rules:
+      - host: demo.cloud.example.com
+        http:
+          paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                  name: frontend-podinfo
+                  port:
+                    name: http
+  strategy:
+    type: roundRobin
+    splitBrainThresholdSeconds: 300
+    dnsTtlSeconds: 30
+    weight:
+      eu: 1
+      us: 3
