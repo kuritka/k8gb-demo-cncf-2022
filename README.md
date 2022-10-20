@@ -1,5 +1,8 @@
 # K8GB DEMO (CNCF 2022 NA)
 
+- [k8gb.io](k8gb.io)
+- [github.com/k8gb-io/k8gb](https://github.com/k8gb-io/k8gb)
+
 ## Install podinfo
 ![Screen Shot 2022-10-20 at 9 07 01](https://user-images.githubusercontent.com/7195836/196879726-e338a2ff-61c3-47bd-9135-c36fdc0636de.png)
 
