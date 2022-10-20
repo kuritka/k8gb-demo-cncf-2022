@@ -90,7 +90,3 @@ reset:
 	rm -f ./log.log 2> /dev/null
 	clear
 
-
-	#scale=2
-	#364/118
-	#3.08

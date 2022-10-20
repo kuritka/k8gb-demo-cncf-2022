@@ -19,7 +19,7 @@ spec:
   strategy:
     type: roundRobin
     splitBrainThresholdSeconds: 300
-    dnsTtlSeconds: 30
+    dnsTtlSeconds: 15
     weight:
       eu: 1 # test-gslb1
       us: 3 # test-gslb3
