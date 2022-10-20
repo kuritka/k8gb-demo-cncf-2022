@@ -26,6 +26,7 @@ deploy-gslbs:
 	kubectl -n demo apply -f gslb.yaml --context=k3d-test-gslb1
 	kubectl -n demo apply -f gslb.yaml --context=k3d-test-gslb2
 
+deploy-podinfo: deploy-app
 deploy-app:
 	helm upgrade --install frontend podinfo/podinfo \
 		--set ui.message="Cluster 2" \
@@ -43,10 +44,12 @@ deploy-app:
 		--kube-context k3d-test-gslb1 \
 		--namespace demo
 
+run-app1: podinfo1
 podinfo1:
 	@echo "CLUSTER1: Visit http://127.0.0.1:8080"
 	kubectl -n demo port-forward deploy/frontend-podinfo 8080:9898 --context=k3d-test-gslb1
 
+run-app2: podinfo2
 podinfo2:
 	@echo "CLUSTER2: Visit http://127.0.0.1:8081"
 	kubectl -n demo port-forward deploy/frontend-podinfo 8081:9898 --context=k3d-test-gslb2
