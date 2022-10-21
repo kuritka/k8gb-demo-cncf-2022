@@ -1,0 +1,14 @@
+# Ignore everything
+*
+
+# But not these files...
+!/.gitignore
+!gslb.yaml
+!Makefile
+!README.md
+!LICENSE
+
+# !Makefile
+
+# ...even if they are in subdirectories
+!*/
