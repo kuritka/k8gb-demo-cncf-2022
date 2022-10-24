@@ -22,6 +22,7 @@ deploy-namespaces:
 	kubectl create namespace demo --dry-run=client -o yaml | kubectl apply --force -f - --context=k3d-test-gslb1
 	kubectl create namespace demo --dry-run=client -o yaml | kubectl apply --force -f - --context=k3d-test-gslb2
 
+install-gslbs: deploy-gslbs
 deploy-gslbs:
 	kubectl -n demo apply -f gslb.yaml --context=k3d-test-gslb1
 	kubectl -n demo apply -f gslb.yaml --context=k3d-test-gslb2
@@ -44,15 +45,20 @@ deploy-app:
 		--kube-context k3d-test-gslb1 \
 		--namespace demo
 
-run-app1: podinfo1
+podinfo-eu: podinfo1
+run-app2: podinfo1
 podinfo1:
-	@echo "CLUSTER1: Visit http://127.0.0.1:8080"
+	@echo "CLUSTER1 (EU): Visit http://127.0.0.1:8081"
+	kubectl -n demo port-forward deploy/frontend-podinfo 8081:9898 --context=k3d-test-gslb2
+
+podinfo-us: podinfo2
+run-app1: podinfo2
+podinfo2:
+	@echo "CLUSTER2 (US): Visit http://127.0.0.1:8080"
 	kubectl -n demo port-forward deploy/frontend-podinfo 8080:9898 --context=k3d-test-gslb1
 
-run-app2: podinfo2
-podinfo2:
-	@echo "CLUSTER2: Visit http://127.0.0.1:8081"
-	kubectl -n demo port-forward deploy/frontend-podinfo 8081:9898 --context=k3d-test-gslb2
+dig:
+	for run in {1..$(I)}; do dig -p 5054 @localhost demo.cloud.example.com +tcp +nostats +noedns +nocomment; done
 
 gslb1:
 	kubectl -n demo get gslb gslb --context=k3d-test-gslb1 -oyaml
@@ -66,9 +72,8 @@ ep1:
 ep2:
 	@echo "EP2 targets" `kubectl get dnsendpoint gslb -oyaml  -n demo --context=k3d-test-gslb2 -o jsonpath={.spec.endpoints[1].targets}`
 
-dig:
-	for run in {1..$(I)}; do dig -p 5054 @localhost demo.cloud.example.com +tcp +nostats +noedns +nocomment; done
-
+logs: stern
+log: stern
 stern:
 	stern -n k8gb -l app.kubernetes.io/name=coredns  | grep wrr
 
