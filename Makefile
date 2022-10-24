@@ -72,12 +72,12 @@ ep1:
 ep2:
 	@echo "EP2 targets" `kubectl get dnsendpoint gslb -oyaml  -n demo --context=k3d-test-gslb2 -o jsonpath={.spec.endpoints[1].targets}`
 
-logs: stern
+
+logs: log
 log: stern
 stern:
 	stern -n k8gb -l app.kubernetes.io/name=coredns  | grep wrr
 
-clean: reset
 clear: reset
 reset:
 	# reset the pod to delete the logs from earlier
@@ -94,4 +94,3 @@ reset:
 	rm -f ./log.txt 2> /dev/null
 	rm -f ./log.log 2> /dev/null
 	clear
-
