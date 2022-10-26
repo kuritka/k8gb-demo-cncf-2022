@@ -72,7 +72,6 @@ ep1:
 ep2:
 	@echo "EP2 targets" `kubectl get dnsendpoint gslb -oyaml  -n demo --context=k3d-test-gslb2 -o jsonpath={.spec.endpoints[1].targets}`
 
-
 logs: log
 log: stern
 stern:
