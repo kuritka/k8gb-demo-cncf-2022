@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    field.cattle.io/publicEndpoints: '[{"addresses":["1.2.3.4"],"port":80}]'
+    k8gb.io/strategy: roundRobin
+  name: gslb
+  namespace: demo
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: demo.cloud.example.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: frontend-podinfo
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+

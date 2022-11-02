@@ -27,6 +27,13 @@ deploy-gslbs:
 	kubectl -n demo apply -f gslb.yaml --context=k3d-test-gslb1
 	kubectl -n demo apply -f gslb.yaml --context=k3d-test-gslb2
 
+
+install-ing: deploy-ing
+deploy-ing:
+	kubectl -n demo apply -f ing.yaml --context=k3d-test-gslb1
+	kubectl -n demo apply -f ing.yaml --context=k3d-test-gslb2
+
+
 deploy-podinfo: deploy-app
 deploy-app:
 	helm upgrade --install frontend podinfo/podinfo \
