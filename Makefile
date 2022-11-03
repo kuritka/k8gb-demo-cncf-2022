@@ -100,3 +100,8 @@ reset:
 	rm -f ./log.txt 2> /dev/null
 	rm -f ./log.log 2> /dev/null
 	clear
+
+
+redeploy: reset deploy-namespaces deploy-podinfo deploy-gslbs
+	kubectl -n k8gb scale deployment k8gb --replicas=0
+	kubectl get pods -A
